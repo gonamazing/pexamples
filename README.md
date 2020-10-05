@@ -86,7 +86,7 @@ sys   0m1.050s
 - Given the results above and without any further optimizations, the ratio of seconds to images processed seems to be about .5. Naively extrapolating this based on the very small number of samples above for 1 billion images comes out to ~16 years. Clearly some optimizations and possibly more hardware are needed to handle input of that scale.
 
 # TODOS and Improvements
-- Thread network requests so they can be parallelized.
+- Thread network requests so they can be parallelized; the results above suggest that I/O accounted for up to 66%-67% of total elapsed time.
 - Use virtualization, cgroups, or some other mechanism to simulate target hardware described in problem statement.
 - If `getcolors()` was not available, investigate ways to get bitmap representation without interating over each pixel and then look into FFT. Another option may be to look into matrix operations to perform pixel operations without iterating over each pixel. The NUMBY library would be my first stop when investigating these options.
 - Look into automated testing to validate output and/or results.
