@@ -1,49 +1,19 @@
+import re
 import sys
-from collections import OrderedDict
-from urllib.request import urlopen
+import numpy as np
 from PIL import Image
+from urllib.request import urlopen
 
 # URL of txt file containing image URLs, one per line
 input = 'https://gist.githubusercontent.com/ehmo/e736c827ca73d84581d812b3a27bb132/raw/77680b283d7db4e7447dbf8903731bb63bf43258/input.txt'
-output = 'prevalentColors.csv'
 
 imageUrls = urlopen(input).read().decode('UTF-8').split()
-# remove duplicates
-imageUrls = list(OrderedDict.fromkeys(imageUrls))
-results = []
 
-for image in imageUrls:
-
-  try:
-    img = Image.open(urlopen(image))
-  except Exception as e:
-    print(image + " ", e)
-    continue
-
-  w,h = img.size
-  colorFrequency = img.getcolors(w*h)
-  colorFrequency.sort(reverse=True,key=lambda colors: colors[0])
-
-  formatString = '{:02X}{:02X}{:02X}'
-
-  color1 = formatString.format(*colorFrequency[0][1])
-  color2 = formatString.format(*colorFrequency[1][1])
-  color3 = formatString.format(*colorFrequency[2][1])
-    
-  result = image + ",#" + color1 + ",#" + color2 + ",#" + color3
-  results.append(result)   
-  print("Images processed: ",len(results), end='\r')
-
-
-f = open(output, "w")
-while len(results) > 0:
-  f.write(results.pop() + "\n")
-f.close()
-
-sys.exit()
-
-
-
+try:
+  img = Image.open(urlopen(imageUrls[598]))
+except Exception as e:
+  print(e)
+  sys.exit(1)
 
 imgArray = np.array(img)
 imgShape = imgArray.shape
@@ -65,9 +35,6 @@ imgShape = imgArray.shape
 ####
 
 newImgArray = np.full((imgArray.shape[0],imgArray.shape[1]), 0)
-print('Shape of New Image Array: ', newImgArray.shape)
-
-
 
 ####
 # The below should work, but is resouce intensive
@@ -102,7 +69,7 @@ for x in imgArray:
       topColors[2] = pixelValue
     iterations += 1
     if iterations % 10000 == 0:
-      print('Iterations: ', iterations)
+      print('Iterations: ', iterations, end='\r')
       print('Color 1: ', topColors[0]>>16,(topColors[0] & 65280)>>8,topColors[0] & 255,' Frequency: ', topFreq[0])
       print('Color 2: ', topColors[1]>>16,(topColors[1] & 65280)>>8,topColors[1] & 255,' Frequency: ', topFreq[1])
       print('Color 3: ', topColors[2]>>16,(topColors[2] & 65280)>>8,topColors[2] & 255,' Frequency: ', topFreq[2])
@@ -129,5 +96,3 @@ print('Color 3: ', topColors[2]>>16,(topColors[2] & 65280)>>8,topColors[1] & 255
 #print('R: ', color3>>16, 'G: ', (color3 & 65280)>>8, 'B: ', (color3 & 255))
 #print(imageUrls[0])
 ###
-
-
