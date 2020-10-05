@@ -82,6 +82,9 @@ real  0m18.423s
 user  0m6.438s
 sys   0m1.050s
 ```
+
+- Given the results above and without any further optimizations, the ratio of seconds to images processed seems to be about .5. Naively extrapolating this based on the very small number of samples above for 1 billion images comes out to ~16 years. Clearly some optimizations and possibly more hardware are needed to handle input of that scale.
+
 # TODOS and Improvements
 - Thread network requests so they can be parallelized.
 - Use virtualization, cgroups, or some other mechanism to simulate target hardware described in problem statement.
