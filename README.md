@@ -6,6 +6,12 @@ Please focus on speed and resources. The solution should be able to handle input
 Answer should be posted in a git repo.
 
 # Execution and Sample Output
+
+*Dependencies*
+- Python3
+- pillow library `$sudo pip3 install pillow`
+- numby library `$sudo pip3 install numpy`
+
 ```
 $time python3 prevalentColors.py 
 https://i.redd.it/d8021b5i2moy.jpg  HTTP Error 404: Not Found
